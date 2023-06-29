@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Example app using DynamoDB and Lambda to implement an app for food badges
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
+    Handler: app.lambdaHandler
+    Runtime: nodejs18.x
+    Architectures:
+      - x86_64
+
+Resources:
+
+  UserVisitPost:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: user-visit-post/
+      Environment:
+        Variables:
+          USER_BADGE_TABLE: !Ref UserBadgeTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UserBadgeTable
+      Events:
+        Api:
+          Type: Api 
+          Properties:
+            Path: /visit
+            Method: post
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints: 
+          - app.ts
+
+  UserBadgeTable:
+    Type: AWS::DynamoDB::Table
+
