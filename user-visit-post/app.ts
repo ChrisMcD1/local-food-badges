@@ -43,20 +43,11 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
 
         const putInputs: PutItemInput = {
-            TableName: process.env.USER_BAGDE_TABLE!,
+            TableName: process.env.USER_BADGE_TABLE!,
             Item: {
                 partitionKey: { S: `USER#${input.username}` },
                 sortKey: { S: `VISIT#${input.restrauntID}` },
-                purchases: {
-                    L: input.purchases.map(purchase => {
-                        return {
-                            M: {
-                                itemName: { S: purchase.itemName },
-                                quantity: { S: purchase.quantity }
-                            }
-                        }
-                    })
-                }
+                purchases: { S: JSON.stringify(input.purchases) }
             }
         }
 

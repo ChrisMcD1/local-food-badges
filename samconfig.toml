@@ -17,11 +17,11 @@ lint = true
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
-s3_prefix = "sam-app-typescript-2"
+s3_prefix = "local-food-badges"
 region = "us-east-1"
 image_repositories = []
 disable_rollback = false
-stack_name = "sam-app-typescript-2"
+stack_name = "local-food-badges"
 
 [default.package.parameters]
 resolve_s3 = true
